@@ -1,10 +1,13 @@
 import express, { Application, Request, Response, NextFunction } from 'express';
 import path from 'path';
+import routes from './routes/index';
 const server = express();
-//import router from './routes/prueba';
 
-//Settings
+
+//Configure port
 server.set('port', process.env.PORT || 8080);
+
+//Configure Express to use EJS
 server.set('views', path.join(__dirname, 'views'));
 server.set('view engine', 'ejs');
 
@@ -14,15 +17,8 @@ server.use((reequest: Request, response: Response, next: NextFunction) => {
     next();
 });
 
-server.get( "/", ( req, res ) => {
-    res.render('index');
-} );
-
 //routes
-//server.use(router);
-
-//static files
-server.use(express.static(path.join(__dirname, 'public')));
+server.use(routes);
 
 //start server
 server.listen(server.get('port'), () => {

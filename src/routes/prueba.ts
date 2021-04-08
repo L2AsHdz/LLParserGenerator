@@ -1,11 +1,11 @@
 import { Request, Response, Router } from 'express';
-const router = Router();
+const pruebaRouter = Router();
 
-router.get('/', (request: Request, response: Response) => {
+pruebaRouter.get('/', (request: Request, response: Response) => {
     response.render('index', {
-        title: 'Titulo desde router',
-        msg: 'Este es un mensaje enviado desde un router con TS'
-    })
+        title: 'Router prueba',
+        msg: 'Este es un mensaje enviado desde un router de un router con TS'
+    });
 });
 
-export default router;
+export default pruebaRouter;
