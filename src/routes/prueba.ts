@@ -1,11 +1,10 @@
 import { Request, Response, Router } from 'express';
+import indexController from '../controllers/pruebaController';
+
 const pruebaRouter = Router();
 
-pruebaRouter.get('/', (request: Request, response: Response) => {
-    response.render('index', {
-        title: 'Router prueba',
-        msg: 'Este es un mensaje enviado desde un router de un router con TS'
-    });
-});
+pruebaRouter.get('/', indexController.prueba);
+
+pruebaRouter.get('/about', indexController.about);
 
 export default pruebaRouter;
