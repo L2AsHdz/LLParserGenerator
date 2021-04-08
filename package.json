@@ -2,19 +2,35 @@
   "name": "llparsergenerator",
   "version": "1.0.0",
   "description": "COMPI 1 2021 - Practica 2",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js",
-    "dev": "nodemon app.js"
+    "clean": "rimraf dist/*",
+    "copy-assets": "ts-node tools/copyAssets",
+    "tsc": "tsc",
+    "build": "npm-run-all clean tsc copy-assets",
+    "dev:start": "npm-run-all build start",
+    "dev": "nodemon --watch src -e ts,ejs --exec npm run dev:start",
+    "start": "node .",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Asael Hernandez",
   "license": "ISC",
   "dependencies": {
+    "bootstrap": "^4.6.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "@types/express": "^4.17.11",
+    "@types/fs-extra": "^9.0.10",
+    "@types/node": "^14.14.37",
+    "@types/shelljs": "^0.8.8",
+    "fs-extra": "^9.1.0",
+    "nodemon": "^2.0.7",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
+    "shelljs": "^0.8.4",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.4"
   }
 }
