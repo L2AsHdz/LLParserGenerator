@@ -1,20 +1,20 @@
 import { Request, Response, Router } from 'express';
 
-const prueba = (request: Request, response: Response) => {
-    response.render('index', {
-        title: 'Router prueba',
-        msg: 'Este es un mensaje enviado desde un router de un router con TS'
-    });
+class PruebaController {
+
+    public prueba (request: Request, response: Response) {
+        response.render('index', {
+            title: 'Router prueba',
+            msg: 'Este es un mensaje enviado desde un router de un router con TS'
+        });
+    }
+
+    public about (request: Request, response: Response) {
+        response.render('index', {
+            'title': 'About',
+            'msg': 'Mensaje desde about'
+        });
+    }
 }
 
-const about = (request: Request, response: Response) => {
-    response.render('index', {
-        'title': 'About',
-        'msg': 'Mensaje desde about'
-    });
-}
-
-export default {
-    prueba,
-     about
-};
+export const pruebaController =  new PruebaController();

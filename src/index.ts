@@ -3,7 +3,6 @@ import path from 'path';
 import routes from './routes/index';
 const server = express();
 
-
 //Configure port
 server.set('port', process.env.PORT || 8080);
 
@@ -12,15 +11,18 @@ server.set('views', path.join(__dirname, 'views'));
 server.set('view engine', 'ejs');
 
 //Middlewares
-server.use((reequest: Request, response: Response, next: NextFunction) => {
-    console.log(`${reequest.url} - ${reequest.method}`);
+server.use((request: Request, response: Response, next: NextFunction) => {
+    console.log(`${request.url} - ${request.method}`);
     next();
 });
 
-//routes
+//Routes
 server.use(routes);
 
-//start server
+//Static files
+server.use(express.static(path.join(__dirname, 'public')));
+
+//Start server
 server.listen(server.get('port'), () => {
     console.log('Server on port ', server.get('port'));
 });

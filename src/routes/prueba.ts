@@ -1,10 +1,10 @@
 import { Request, Response, Router } from 'express';
-import indexController from '../controllers/pruebaController';
+import {pruebaController} from '../controllers/pruebaController';
 
 const pruebaRouter = Router();
 
-pruebaRouter.get('/', indexController.prueba);
+pruebaRouter.get('/', pruebaController.prueba);
 
-pruebaRouter.get('/about', indexController.about);
+pruebaRouter.get('/about', pruebaController.about);
 
 export default pruebaRouter;
