@@ -1,0 +1,23 @@
+Wison ¿
+    Lex{:
+        Terminal $_Numero       <- [0-9];
+        Terminal $_palabra      <- [aA-zZ]*
+    :}
+
+    Syntax {{:
+    
+        No_Terminal %_S;
+        No_Terminal %_S1;
+        No_Terminal &_S2;
+        No_Terminal %_S3;
+
+        Initial_Sim %_S;
+
+        %_S     <= %_S1;
+        %_S1    <= $_Numero;
+        %_S2    <= %_S3;
+        %_S3    <= %_palabra;
+
+    :}}
+
+?Wison
