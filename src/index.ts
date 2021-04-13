@@ -1,6 +1,6 @@
-import express, { Application, Request, Response, NextFunction } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
-import routes from './routes/index';
+import routes from './routes/indexRoutes';
 const server = express();
 
 //Configure port

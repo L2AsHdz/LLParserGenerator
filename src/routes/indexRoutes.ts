@@ -3,13 +3,10 @@ import pruebaRouter from './prueba';
 
 const routes = Router();
 
-routes.use('/prueba', pruebaRouter);
+//routes.use('/prueba', pruebaRouter);
 
 routes.get('/', (request: Request, response: Response) => {
-    response.render('index', {
-        'title': 'Titulo principal',
-        'msg': 'Este es un mensaje enviado desde el router principal'
-    });
+    response.render('indexWison',);
 });
 
 export default routes;
