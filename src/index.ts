@@ -1,7 +1,7 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express, { Application, Request, Response, NextFunction } from 'express';
 import path from 'path';
 import routes from './routes/indexRoutes';
-const server = express();
+const server: Application = express();
 
 //Configure port
 server.set('port', process.env.PORT || 8080);
@@ -11,6 +11,8 @@ server.set('views', path.join(__dirname, 'views'));
 server.set('view engine', 'ejs');
 
 //Middlewares
+server.use(express.json());
+server.use(express.urlencoded({extended: true}));
 server.use((request: Request, response: Response, next: NextFunction) => {
     console.log(`${request.url} - ${request.method}`);
     next();
