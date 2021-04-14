@@ -11,6 +11,7 @@
 "Syntax"                {return 'Syntax';}
 "No_Terminal"           {return 'No_Terminal';}
 "Initial_Sim"           {return 'Initial_Sim';}
+"lambda"           {return 'lambda';}
 
 //Signos
 "¿"                     {return 'question_apertura';}
@@ -221,14 +222,16 @@ PRODUCCION
 
 LADO_DERECHO
     : TERMINO LADO_DERECHO          { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: noProduccion}); }
-    | TERMINO pipe OTRO             { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: 1}); }
+    | TERMINO pipe OTRO             { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: ++noProduccion}); }
     | TERMINO punto_coma            { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: noProduccion}); }
+    | lambda punto_coma             { terminos.unshift({name: 'lambda', isTerminal: false, noProduccion: noProduccion}); }
 ;
 
 OTRO
     : TERMINO OTRO          { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: noProduccion}); }
     | TERMINO pipe OTRO     { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: ++noProduccion}); }
     | TERMINO punto_coma    { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: ++noProduccion}); }
+    | lambda punto_coma     { terminos.unshift({name: 'lambda', isTerminal: false, noProduccion: ++noProduccion}); }
 ;
 
 TERMINO
