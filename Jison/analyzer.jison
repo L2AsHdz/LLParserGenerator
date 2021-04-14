@@ -46,6 +46,16 @@
 %{
     let terminalClausula = "";
     let terminalCombinado = new Array;
+    let terminalesDeclarados = new Array;
+    let terminalesUsados = new Array;
+    let nonTerminalsDeclarados = new Array;
+    let nonTerminalsUsados = new Array;
+
+    function addToArray(array , element) {
+        if (array.find(e => e == element) == undefined) {
+            array.push(element);
+        }
+    }
 %}
 
 %start INICIO
@@ -65,7 +75,9 @@ ANALIZADORES
 ;
 
 LEXICO
-    : Lex llave_izq dos_puntos TERMINALES dos_puntos llave_der
+    : Lex llave_izq dos_puntos TERMINALES dos_puntos llave_der {
+        console.log('Terminales: ', terminalesDeclarados.join());
+    }
 ;
 
 TERMINALES
@@ -74,7 +86,7 @@ TERMINALES
 ;
 
 TERMINAL
-    : Terminal nameTerminal simple_arrow LEXIC_RULE { console.log(`Terminal: ${$4}`); }
+    : Terminal nameTerminal simple_arrow LEXIC_RULE { terminalesDeclarados.push($4); }
 ;
 
 LEXIC_RULE
@@ -86,7 +98,12 @@ LEXIC_RULE
 ;
 
 LEXIC_RULE2
-    : GRUPO CLAUSULA { terminalClausula += $1 + $2; $$ = terminalClausula; terminalClausula = ""; }
+    : GRUPO CLAUSULA {
+        terminalClausula += $1 + $2;
+        $$ = terminalClausula;
+        terminalClausula = "";
+    }
+
     | GRUPO { $$ = $1 }
 ;
 
@@ -102,8 +119,15 @@ CLAUSULA
 ;
 
 COMBINED_TERMINALS
-    : COMBINED_TERMINAL paren_cierre COMBINED_TERMINALS     { terminalCombinado.unshift($1 + $2); $$ = terminalCombinado.join(""); }
-    | COMBINED_TERMINAL paren_cierre                        { terminalCombinado.unshift($1 + $2); $$ = terminalCombinado.join(""); }
+    : COMBINED_TERMINAL paren_cierre COMBINED_TERMINALS {
+        terminalCombinado.unshift($1 + $2);
+        $$ = terminalCombinado.join("");
+    }
+
+    | COMBINED_TERMINAL paren_cierre {
+        terminalCombinado.unshift($1 + $2);
+        $$ = terminalCombinado.join("");
+    }
 ;
 
 COMBINED_TERMINAL
@@ -112,7 +136,10 @@ COMBINED_TERMINAL
 
 LEXIC_RULE3
     : LEXIC_RULE2 { $$ = $1; }
-    | nameTerminal { $$ = $1; }
+    | nameTerminal {
+        $$ = $1;
+        addToArray(terminalesUsados, $1);
+    }
 ;
 
 SINTACTICO
@@ -120,20 +147,28 @@ SINTACTICO
 ;
 
 DEFINICION_GRAMATICA
-    : NO_TERMINALES SIMBOLO_INICIAL PRODUCCIONES
+    : NO_TERMINALES SIMBOLO_INICIAL PRODUCCIONES {
+        console.log('Terminales usados: ', terminalesUsados.join());
+        console.log('No Terminales: ', nonTerminalsDeclarados.join());
+        console.log('No Terminales usados: ', nonTerminalsUsados.join());
+    }
 ;
 
 NO_TERMINALES
-    : NO_TERMINAL punto_coma NO_TERMINALES
-    | NO_TERMINAL punto_coma
+    : NO_TERMINAL punto_coma NO_TERMINALES {
+        nonTerminalsDeclarados.unshift($1);
+    }
+    | NO_TERMINAL punto_coma {
+        nonTerminalsDeclarados.unshift($1);
+    }
 ;
 
 NO_TERMINAL
-    : No_Terminal nameNonTerminal
+    : No_Terminal nameNonTerminal { $$ = $2; }
 ;
 
 SIMBOLO_INICIAL
-    : Initial_Sim nameNonTerminal punto_coma
+    : Initial_Sim nameNonTerminal punto_coma { addToArray(nonTerminalsUsados, $2); }
 ;
 
 PRODUCCIONES
@@ -142,7 +177,7 @@ PRODUCCIONES
 ;
 
 PRODUCCION
-    : nameNonTerminal doble_arrow LADO_DERECHO
+    : nameNonTerminal doble_arrow LADO_DERECHO { addToArray(nonTerminalsUsados, $1); }
 ;
 
 LADO_DERECHO
@@ -152,6 +187,6 @@ LADO_DERECHO
 ;
 
 TERMINO
-    : nameTerminal
-    | nameNonTerminal
+    : nameTerminal      { addToArray(terminalesUsados, $1);}
+    | nameNonTerminal   { addToArray( nonTerminalsUsados, $1); }
 ;
