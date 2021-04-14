@@ -1,7 +1,8 @@
-import * as shell from "shelljs";
+import {cp} from "shelljs";
 
 // Copy all the view templates
-shell.cp( "-R", "src/views", "dist/" );
-shell.cp( "-R", "src/public/css", "dist/public" );
-shell.cp( "-R", "src/public/js", "dist/public" );
+cp( "-R", "src/views", "dist/" );
+cp( "-R", "src/public/css", "dist/public" );
+cp( "-R", "src/public/js", "dist/public" );
+cp( "-R", "src/analizador", "dist/" );
 //shell.rm("-rf", 'dist/public/*.ts')

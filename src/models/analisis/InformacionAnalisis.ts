@@ -48,5 +48,4 @@ export class InformacionAnalisis {
         this.producciones = producciones;
     }
 
-
 }

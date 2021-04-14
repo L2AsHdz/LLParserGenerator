@@ -44,6 +44,8 @@
 /lex
 
 %{
+    const { InformacionAnalisis } = require('../models/analisis/InformacionAnalisis');
+
     let terminalClausula = "";
     let terminalCombinado = new Array;
 
@@ -60,6 +62,30 @@
     function addToArray(array , element) {
         if (array.find(e => e == element) == undefined) {
             array.push(element);
+        }
+    }
+
+    function addProduccion(leftSide, rightSide) {
+        for (i in rightSide) {
+            let termsAux = new Array;
+            let noP;
+            if (i == 0) {
+                noP = rightSide[i].noProduccion;
+            } else {
+                if (rightSide[i].noProduccion == rightSide[i-1].noProduccion) {
+                    continue;
+                } else {
+                    noP = rightSide[i].noProduccion;
+                }
+            }
+            for (j in rightSide) {
+                if (rightSide[j].noProduccion == noP) {
+                    termsAux.push(rightSide[j]);
+                }
+            }
+            if (termsAux.length > 0) {
+                producciones.push({izq: leftSide, der: termsAux});
+            }
         }
     }
 %}
@@ -186,7 +212,7 @@ PRODUCCIONES
 PRODUCCION
     : nameNonTerminal doble_arrow LADO_DERECHO {
         addToArray(nonTerminalsUsados, $1);
-        producciones.push({izq: $1, der: terminos});
+        addProduccion($1, terminos);
         console.log(terminos);
         terminos = new Array;
         noProduccion = 1;
@@ -195,12 +221,13 @@ PRODUCCION
 
 LADO_DERECHO
     : TERMINO LADO_DERECHO          { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: noProduccion}); }
-    | TERMINO pipe OTRO             { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: --noProduccion}); }
+    | TERMINO pipe OTRO             { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: 1}); }
     | TERMINO punto_coma            { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: noProduccion}); }
 ;
 
 OTRO
     : TERMINO OTRO          { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: noProduccion}); }
+    | TERMINO pipe OTRO     { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: ++noProduccion}); }
     | TERMINO punto_coma    { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: ++noProduccion}); }
 ;
 

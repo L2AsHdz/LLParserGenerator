@@ -26,7 +26,7 @@ Wison ¿
         */
         %_S     <= %_S1 $_caracter3 $_letra3;
         %_S1    <= $_Numero %_S1 $_caracter3 $_letra3;
-        %_S2    <= $_Numero | $_caracter2 %_S3 %_S2;
+        %_S2    <= $_Numero | $_caracter2 %_S3 %_S2 | %_S3 %_S2 | $_Numero | %_S2;
         %_S2    <= %_S3 %_S2 %_S1;
         %_S3    <= %_palabra %_S3 %_S2 %_S1;
     :}}
