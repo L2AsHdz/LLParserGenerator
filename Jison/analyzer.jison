@@ -2,37 +2,37 @@
 %lex
 
 %%
-\s+
+\s+                     //Ignorar espacios en blanco
 
 //Palabras reservadas
-"Wison"                 {console.log('Wison detectado');}
-"Lex"                   return 'Lex';
-"Terminal"              return 'Terminal';
-"Syntax"                return 'Syntax';
-"No_Terminal"           return 'No_Terminal';
-"Initial_Sim"           return 'Initial_Sim';
+"Wison"                 {return 'Wison';}
+"Lex"                   {return 'Lex';}
+"Terminal"              {return 'Terminal';}
+"Syntax"                {return 'Syntax';}
+"No_Terminal"           {return 'No_Terminal';}
+"Initial_Sim"           {return 'Initial_Sim';}
 
 //Signos
-"¿"                     return 'question_apertura';
-"{"                     return 'llave_izq';
-":"                     return 'dos_puntos';
-"<-"                    return 'simple_arrow';
-";"                     return 'punto_coma';
-"}"                     return 'llave_der';
-"<="                    return 'doble_arrow';
-"?"                     return 'question_cierre';
-"*"                     return 'klenee';
-"+"                     return 'mas';
-"("                     return 'paren_apertura';
-")"                     return 'paren_cierre';
-"'"                     return 'comilla';
-"|"                     return "pipe";
+"¿"                     {return 'question_apertura';}
+"{"                     {return 'llave_izq';}
+":"                     {return 'dos_puntos';}
+"<-"                    {return 'simple_arrow';}
+";"                     {return 'punto_coma';}
+"}"                     {return 'llave_der';}
+"<="                    {return 'doble_arrow';}
+"?"                     {return 'question_cierre';}
+"*"                     {return 'klenee';}
+"+"                     {return 'mas';}
+"("                     {return 'paren_apertura';}
+")"                     {return 'paren_cierre';}
+"'"                     {return 'comilla';}
+"|"                     {return "pipe";}
 
 //regexs
 "#".*                       //Comentario de una lineal
 [/][*][*][^EOF]*[*][/]      //Comentario en bloque
-$_([a-zA-Z]|[0-9]|_)+       return 'nameTerminal';
-%_([a-zA-Z]|[0-9]|_)+       return 'nameNonTerminal';
+[$]_([a-zA-Z]|[0-9]|_)+       return 'nameTerminal';
+[%]_([a-zA-Z]|[0-9]|_)+       return 'nameNonTerminal';
 \'[a-zA-Z]|[0-9]\'          return 'caracter_alphanum';
 \'[^[a-zA-Z]]\'             return 'caracter_especial';
 "[aA-zZ]"                   return 'letras';
@@ -48,8 +48,7 @@ $_([a-zA-Z]|[0-9]|_)+       return 'nameTerminal';
 
 
 INICIO
-    : WISON EOF{console.log('analisis finalizado')}
- //   : WISON question_apertura ANALIZADORES question_cierre Wison EOF
+    : Wison question_apertura ANALIZADORES question_cierre Wison EOF {console.log('Analisis finalizado');}
 ;
 
 ANALIZADORES
@@ -66,7 +65,7 @@ TERMINALES
 ;
 
 TERMINAL
-    : Terminal nameTerminal simple_arrow LEXIC_RULE punto_coma
+    : Terminal nameTerminal simple_arrow LEXIC_RULE
 ;
 
 LEXIC_RULE
@@ -134,7 +133,7 @@ PRODUCCIONES
 ;
 
 PRODUCCION
-    : nameNonTerminal doble_arrow LADO_DERECHO punto_coma
+    : nameNonTerminal doble_arrow LADO_DERECHO
 ;
 
 LADO_DERECHO

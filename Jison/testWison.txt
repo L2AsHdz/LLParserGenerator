@@ -1,14 +1,14 @@
 Wison ¿
     Lex{:
         Terminal $_Numero       <- [0-9];
-        Terminal $_palabra      <- [aA-zZ]*
+        Terminal $_palabra      <- [aA-zZ]*;
     :}
 
     Syntax {{:
     
         No_Terminal %_S;
         No_Terminal %_S1;
-        No_Terminal &_S2;
+        No_Terminal %_S2;
         No_Terminal %_S3;
 
         Initial_Sim %_S;
