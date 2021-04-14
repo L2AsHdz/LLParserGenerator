@@ -42,6 +42,12 @@
 .                   {console.log('Error lexico', yytext);}
 
 /lex
+
+%{
+    let terminalClausula = "";
+    let terminalCombinado = new Array;
+%}
+
 %start INICIO
 %%
 
@@ -68,45 +74,45 @@ TERMINALES
 ;
 
 TERMINAL
-    : Terminal nameTerminal simple_arrow LEXIC_RULE
+    : Terminal nameTerminal simple_arrow LEXIC_RULE { console.log(`Terminal: ${$4}`); }
 ;
 
 LEXIC_RULE
-    : caracter_alphanum
-    | keyword
-    | caracter_especial
-    | LEXIC_RULE2
-    | COMBINED_TERMINALS
+    : caracter_alphanum { $$ = $1; }
+    | keyword { $$ = $1; }
+    | caracter_especial { $$ = $1; }
+    | LEXIC_RULE2 { $$ = $1; }
+    | COMBINED_TERMINALS { $$ = $1; terminalCombinado = new Array; }
 ;
 
 LEXIC_RULE2
-    : GRUPO CLAUSULA
-    | GRUPO
+    : GRUPO CLAUSULA { terminalClausula += $1 + $2; $$ = terminalClausula; terminalClausula = ""; }
+    | GRUPO { $$ = $1 }
 ;
 
 GRUPO
-    : letras
-    | digitos
+    : letras { $$ = $1; }
+    | digitos { $$ = $1; }
 ;
 
 CLAUSULA
-    : klenee
-    | mas
-    | question_cierre
+    : klenee { $$ = $1; }
+    | mas { $$ = $1; }
+    | question_cierre { $$ = $1; }
 ;
 
 COMBINED_TERMINALS
-    : COMBINED_TERMINAL paren_cierre COMBINED_TERMINALS
-    | COMBINED_TERMINAL paren_cierre
+    : COMBINED_TERMINAL paren_cierre COMBINED_TERMINALS     { terminalCombinado.unshift($1 + $2); $$ = terminalCombinado.join(""); }
+    | COMBINED_TERMINAL paren_cierre                        { terminalCombinado.unshift($1 + $2); $$ = terminalCombinado.join(""); }
 ;
 
 COMBINED_TERMINAL
-    : paren_apertura LEXIC_RULE3
+    : paren_apertura LEXIC_RULE3 { $$ = $1 + $2; }
 ;
 
 LEXIC_RULE3
-    : LEXIC_RULE2
-    | nameTerminal
+    : LEXIC_RULE2 { $$ = $1; }
+    | nameTerminal { $$ = $1; }
 ;
 
 SINTACTICO
