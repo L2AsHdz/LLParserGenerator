@@ -46,10 +46,16 @@
 %{
     let terminalClausula = "";
     let terminalCombinado = new Array;
+
     let terminalesDeclarados = new Array;
     let terminalesUsados = new Array;
     let nonTerminalsDeclarados = new Array;
     let nonTerminalsUsados = new Array;
+    let producciones = new Array;
+    let terminos = new Array;
+
+    let noProduccion = 1;
+    let isTerminal = true;
 
     function addToArray(array , element) {
         if (array.find(e => e == element) == undefined) {
@@ -151,6 +157,7 @@ DEFINICION_GRAMATICA
         console.log('Terminales usados: ', terminalesUsados.join());
         console.log('No Terminales: ', nonTerminalsDeclarados.join());
         console.log('No Terminales usados: ', nonTerminalsUsados.join());
+        console.log('\nProducciones: ', producciones);
     }
 ;
 
@@ -177,16 +184,27 @@ PRODUCCIONES
 ;
 
 PRODUCCION
-    : nameNonTerminal doble_arrow LADO_DERECHO { addToArray(nonTerminalsUsados, $1); }
+    : nameNonTerminal doble_arrow LADO_DERECHO {
+        addToArray(nonTerminalsUsados, $1);
+        producciones.push({izq: $1, der: terminos});
+        console.log(terminos);
+        terminos = new Array;
+        noProduccion = 1;
+    }
 ;
 
 LADO_DERECHO
-    : TERMINO LADO_DERECHO
-    | TERMINO pipe LADO_DERECHO
-    | TERMINO punto_coma
+    : TERMINO LADO_DERECHO          { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: noProduccion}); }
+    | TERMINO pipe OTRO             { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: --noProduccion}); }
+    | TERMINO punto_coma            { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: noProduccion}); }
+;
+
+OTRO
+    : TERMINO OTRO          { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: noProduccion}); }
+    | TERMINO punto_coma    { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: ++noProduccion}); }
 ;
 
 TERMINO
-    : nameTerminal      { addToArray(terminalesUsados, $1);}
-    | nameNonTerminal   { addToArray( nonTerminalsUsados, $1); }
+    : nameTerminal      { addToArray(terminalesUsados, $1); $$ = {n: $1, isT: true}; }
+    | nameNonTerminal   { addToArray( nonTerminalsUsados, $1); $$ = {n: $1, isT: false}; }
 ;
