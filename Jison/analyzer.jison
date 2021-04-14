@@ -25,15 +25,14 @@
 "+"                     {return 'mas';}
 "("                     {return 'paren_apertura';}
 ")"                     {return 'paren_cierre';}
-"'"                     {return 'comilla';}
 "|"                     {return "pipe";}
 
 //regexs
 "#".*                       //Comentario de una lineal
 [/][*][*][^EOF]*[*][/]      //Comentario en bloque
-[$]_([a-zA-Z]|[0-9]|_)+       return 'nameTerminal';
-[%]_([a-zA-Z]|[0-9]|_)+       return 'nameNonTerminal';
-\'[a-zA-Z]|[0-9]\'          return 'caracter_alphanum';
+[$]_([a-zA-Z]|[0-9]|_)+     return 'nameTerminal';
+[%]_([a-zA-Z]|[0-9]|_)+     return 'nameNonTerminal';
+\'([a-zA-Z]|[0-9])\'        return 'caracter_alphanum';
 \'[^[a-zA-Z]]\'             return 'caracter_especial';
 "[aA-zZ]"                   return 'letras';
 "[0-9]"                     return 'digitos';
@@ -48,7 +47,11 @@
 
 
 INICIO
-    : Wison question_apertura ANALIZADORES question_cierre Wison EOF {console.log('Analisis finalizado');}
+    : WISON_STRUCTURE EOF {console.log('Analisis finalizado');}
+;
+
+WISON_STRUCTURE
+    : Wison question_apertura ANALIZADORES question_cierre Wison
 ;
 
 ANALIZADORES
@@ -128,8 +131,8 @@ SIMBOLO_INICIAL
 ;
 
 PRODUCCIONES
-    : PRODUCCION punto_coma PRODUCCIONES
-    | PRODUCCION punto_coma
+    : PRODUCCION PRODUCCIONES
+    | PRODUCCION
 ;
 
 PRODUCCION
@@ -137,6 +140,12 @@ PRODUCCION
 ;
 
 LADO_DERECHO
+    : TERMINO LADO_DERECHO
+    | TERMINO pipe LADO_DERECHO
+    | TERMINO punto_coma
+;
+
+TERMINO
     : nameTerminal
     | nameNonTerminal
 ;

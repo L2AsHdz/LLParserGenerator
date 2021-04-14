@@ -1,11 +1,19 @@
 Wison ¿
     Lex{:
+        Terminal $_letra        <- 's';
+        Terminal $_letra2       <- 'A';
+        Terminal $_letra3       <- 'l';
+        Terminal $_caracter     <- ';';
+        Terminal $_caracter2    <- '{';
+        Terminal $_caracter3    <- '-';
+        Terminal $_keyword      <- 'reservedWord';
         Terminal $_Numero       <- [0-9];
         Terminal $_palabra      <- [aA-zZ]*;
+        Terminal $_combined     <- ([0-9]*)($_letra)($_caracter3);
     :}
 
     Syntax {{:
-    
+        #Comentario
         No_Terminal %_S;
         No_Terminal %_S1;
         No_Terminal %_S2;
@@ -13,11 +21,13 @@ Wison ¿
 
         Initial_Sim %_S;
 
-        %_S     <= %_S1;
-        %_S1    <= $_Numero;
-        %_S2    <= %_S3;
-        %_S3    <= %_palabra;
-
+        /**
+        comentario en bloque
+        */
+        %_S     <= %_S1 $_caracter3 $_letra3;
+        %_S1    <= $_Numero %_S1 $_caracter3 $_letra3;
+        %_S2    <= $_Numero | $_caracter2 %_S3 %_S2;
+        %_S2    <= %_S3 %_S2 %_S1;
+        %_S3    <= %_palabra %_S3 %_S2 %_S1;
     :}}
-
 ?Wison
