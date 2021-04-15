@@ -226,14 +226,14 @@ LADO_DERECHO
     : TERMINO LADO_DERECHO          { terminos.unshift(new Termino($1.n, $1.isT, noProduccion)); }
     | TERMINO pipe OTRO             { terminos.unshift(new Termino($1.n, $1.isT, ++noProduccion)); }
     | TERMINO punto_coma            { terminos.unshift(new Termino($1.n, $1.isT, noProduccion)); }
-    | lambda punto_coma             { terminos.unshift(new Termino('lambda', false, noProduccion)); }
+    | lambda punto_coma             { terminos.unshift(new Termino('lambda', true, noProduccion)); }
 ;
 
 OTRO
     : TERMINO OTRO          { terminos.unshift(new Termino($1.n, $1.isT, noProduccion)); }
     | TERMINO pipe OTRO     { terminos.unshift(new Termino($1.n, $1.isT, ++noProduccion)); }
     | TERMINO punto_coma    { terminos.unshift(new Termino($1.n, $1.isT, ++noProduccion)); }
-    | lambda punto_coma     { terminos.unshift(new Termino('lambda', false, ++noProduccion)); }
+    | lambda punto_coma     { terminos.unshift(new Termino('lambda', true, ++noProduccion)); }
 ;
 
 TERMINO

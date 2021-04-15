@@ -21,8 +21,8 @@ class AnalizadorController {
         nulables.calcularNulables();
 
         console.log('NoTerminalesTabla: ');
-        for (let i in noTermsTable) {
-            console.log(noTermsTable[i]);
+        for (let nT of noTermsTable) {
+            console.log(nT);
         }
 
         //let gen: PrimerosGenerator = new PrimerosGenerator(info.getProducciones(), nTs);

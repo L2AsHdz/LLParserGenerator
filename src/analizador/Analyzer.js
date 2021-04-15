@@ -163,13 +163,13 @@ case 35: case 39:
  terminos.unshift(new Termino($$[$0-2].n, $$[$0-2].isT, ++noProduccion)); 
 break;
 case 37:
- terminos.unshift(new Termino('lambda', false, noProduccion)); 
+ terminos.unshift(new Termino('lambda', true, noProduccion)); 
 break;
 case 40:
  terminos.unshift(new Termino($$[$0-1].n, $$[$0-1].isT, ++noProduccion)); 
 break;
 case 41:
- terminos.unshift(new Termino('lambda', false, ++noProduccion)); 
+ terminos.unshift(new Termino('lambda', true, ++noProduccion)); 
 break;
 case 42:
  addToArray(terminalesUsados, $$[$0]); this.$ = {n: $$[$0], isT: true}; 
