@@ -8,6 +8,15 @@ export class InformacionAnalisis {
     private nonTerminalsUsados: Array<string>;
     private producciones: Array<Produccion>;
 
+    constructor(terminales: Array<string>, terminalesUsados: Array<string>, nonTerminals: Array<string>,
+        nonTerminalsUsados: Array<string>, producciones: Array<Produccion>) {
+            this.terminales = terminales;
+            this.terminalesUsados = terminalesUsados;
+            this.nonTerminals = nonTerminals;
+            this.nonTerminalsUsados = nonTerminalsUsados;
+            this.producciones = producciones;
+    }
+
     public getTerminales(): Array<string> {
         return this.terminales;
     }
@@ -46,6 +55,18 @@ export class InformacionAnalisis {
 
     public setProducciones(producciones: Array<Produccion>): void {
         this.producciones = producciones;
+    }
+
+    public print() {
+        console.log('Terminales declarados: ', this.terminales.join());
+        console.log('Terminales usuados: ', this.terminalesUsados.join());
+        console.log('No Terminales declarados: ', this.nonTerminals.join());
+        console.log('No Terminales usuados: ', this.nonTerminalsUsados.join());
+
+        console.log('Producciones: \n');
+        for (let i in this.producciones) {
+            console.log(this.producciones[i]);
+        }
     }
 
 }

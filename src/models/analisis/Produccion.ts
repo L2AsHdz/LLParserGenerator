@@ -2,23 +2,28 @@ import {Termino} from './Termino';
 
 export class Produccion {
 
-    private nonTerminalLeft: string;
-    private Terminos: Array<Termino>;
+    private leftSide: string;
+    private rightSide: Array<Termino>;
 
-    public getNonTerminalLeft(): string {
-        return this.nonTerminalLeft;
+    constructor(leftSide: string, rightSide: Array<Termino>) {
+        this.leftSide = leftSide;
+        this.rightSide = rightSide;
     }
 
-    public setNonTerminalLeft(nonTerminalLeft: string): void {
-        this.nonTerminalLeft = nonTerminalLeft;
+    public getLeftSide(): string {
+        return this.leftSide;
     }
 
-    public getTerminos(): Array<Termino> {
-        return this.Terminos;
+    public setLeftSide(leftSide: string): void {
+        this.leftSide = leftSide;
     }
 
-    public setTerminos(Terminos: Array<Termino>): void {
-        this.Terminos = Terminos;
+    public getRightSide(): Array<Termino> {
+        return this.rightSide;
+    }
+
+    public setRightSide(rightSide: Array<Termino>): void {
+        this.rightSide = rightSide;
     }
 
 }

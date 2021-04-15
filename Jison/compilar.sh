@@ -1,9 +1,9 @@
 #!/bin/zsh
 
 echo compilando archivo jison...
-jison analyzer.jison
+jison Analyzer.jison
 echo ----------------------------------------
 
 echo moviendo archivo
-cp analyzer.js ../src/analizador/
+mv Analyzer.js ../src/analizador/
 echo ----------------------------------------

@@ -71,7 +71,7 @@
     recoverable: (boolean: TRUE when the parser has a error recovery rule available for this particular error)
   }
 */
-var analyzer = (function(){
+var Analyzer = (function(){
 var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,19],$V1=[1,27],$V2=[1,44],$V3=[1,45],$V4=[1,46],$V5=[1,50],$V6=[18,35],$V7=[9,18,32,33,35],$V8=[1,69],$V9=[1,70],$Va=[1,68],$Vb=[14,45],$Vc=[18,20,45,51,53],$Vd=[1,77];
 var parser = {trace: function trace () { },
 yy: {},
@@ -84,11 +84,9 @@ performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* actio
 var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
-console.log('Analisis finalizado');
-break;
-case 4:
 
-        console.log('Terminales: ', terminalesDeclarados.join());
+        console.log('\n***************Analisis finalizado***************\n');
+        return info;
     
 break;
 case 7:
@@ -133,10 +131,8 @@ case 24:
 break;
 case 26:
 
-        console.log('Terminales usados: ', terminalesUsados.join());
-        console.log('No Terminales: ', nonTerminalsDeclarados.join());
-        console.log('No Terminales usados: ', nonTerminalsUsados.join());
-        console.log('\nProducciones: ', producciones);
+        info = new InformacionAnalisis(terminalesDeclarados, terminalesUsados,
+        nonTerminalsDeclarados, nonTerminalsUsados, producciones);
     
 break;
 case 27:
@@ -156,7 +152,6 @@ case 33:
 
         addToArray(nonTerminalsUsados, $$[$0-2]);
         addProduccion($$[$0-2], terminos);
-        console.log(terminos);
         terminos = new Array;
         noProduccion = 1;
     
@@ -334,6 +329,8 @@ parse: function parse(input) {
 }};
 
     const { InformacionAnalisis } = require('../models/analisis/InformacionAnalisis');
+
+    let info;
 
     let terminalClausula = "";
     let terminalCombinado = new Array;
@@ -786,9 +783,9 @@ return new Parser;
 
 
 if (typeof require !== 'undefined' && typeof exports !== 'undefined') {
-exports.parser = analyzer;
-exports.Parser = analyzer.Parser;
-exports.parse = function () { return analyzer.parse.apply(analyzer, arguments); };
+exports.parser = Analyzer;
+exports.Parser = Analyzer.Parser;
+exports.parse = function () { return Analyzer.parse.apply(Analyzer, arguments); };
 exports.main = function commonjsMain (args) {
     if (!args[1]) {
         console.log('Usage: '+args[0]+' FILE');

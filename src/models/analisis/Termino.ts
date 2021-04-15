@@ -5,10 +5,10 @@
     private isTerminal: boolean;
     private noProduccion: number;
 
-    public constructor(nombre: string, isTerminal: boolean) {
+    public constructor(nombre: string, isTerminal: boolean, noProduccion: number) {
         this.nombre = nombre;
         this.isTerminal = isTerminal;
-        this.noProduccion = 1;
+        this.noProduccion = noProduccion;
     }
 
     public getNombre(): string {

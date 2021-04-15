@@ -47,6 +47,8 @@
 %{
     const { InformacionAnalisis } = require('../models/analisis/InformacionAnalisis');
 
+    let info;
+
     let terminalClausula = "";
     let terminalCombinado = new Array;
 
@@ -96,7 +98,10 @@
 
 
 INICIO
-    : WISON_STRUCTURE EOF {console.log('Analisis finalizado');}
+    : WISON_STRUCTURE EOF {
+        console.log('\n***************Analisis finalizado***************\n');
+        return info;
+    }
 ;
 
 WISON_STRUCTURE
@@ -108,9 +113,7 @@ ANALIZADORES
 ;
 
 LEXICO
-    : Lex llave_izq dos_puntos TERMINALES dos_puntos llave_der {
-        console.log('Terminales: ', terminalesDeclarados.join());
-    }
+    : Lex llave_izq dos_puntos TERMINALES dos_puntos llave_der
 ;
 
 TERMINALES
@@ -181,10 +184,8 @@ SINTACTICO
 
 DEFINICION_GRAMATICA
     : NO_TERMINALES SIMBOLO_INICIAL PRODUCCIONES {
-        console.log('Terminales usados: ', terminalesUsados.join());
-        console.log('No Terminales: ', nonTerminalsDeclarados.join());
-        console.log('No Terminales usados: ', nonTerminalsUsados.join());
-        console.log('\nProducciones: ', producciones);
+        info = new InformacionAnalisis(terminalesDeclarados, terminalesUsados,
+        nonTerminalsDeclarados, nonTerminalsUsados, producciones);
     }
 ;
 
@@ -214,7 +215,6 @@ PRODUCCION
     : nameNonTerminal doble_arrow LADO_DERECHO {
         addToArray(nonTerminalsUsados, $1);
         addProduccion($1, terminos);
-        console.log(terminos);
         terminos = new Array;
         noProduccion = 1;
     }
