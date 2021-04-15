@@ -1,0 +1,32 @@
+Wison ¿
+    Lex{:
+        Terminal $_mas       <- '+';
+        Terminal $_por       <- '*';
+        Terminal $_parA      <- '(';
+        Terminal $_parC      <- ')';
+        Terminal $_id        <- 'id';
+        Terminal $_num       <- 'num';
+    :}
+
+    Syntax {{:
+        #Comentario
+        No_Terminal %_E;
+        No_Terminal %_T;
+        No_Terminal %_F;
+
+        Initial_Sim %_E;
+
+        /**
+        comentario en bloque
+        */
+
+        %_E     <= %_E $_mas %_T;
+        %_E     <= %_T;
+        %_T     <= %_T $_por %_F;
+        %_T     <= %_F;
+        %_F     <= $_id;
+        %_F     <= $_num;
+        %_F     <= $_parA %_E $_parC;
+        %_F     <= lambda;
+    :}}
+?Wison

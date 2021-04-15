@@ -12,11 +12,15 @@ export class PrimerosGenerator {
         this.noTerminals = noTerminals;
     }
 
-    public getPrimeros() {
-        for (let i in this.producciones) {
-            let x: string = this.producciones[i].getLeftSide();
-            let right: Termino = this.producciones[i].getRightSide()[0];
-            console.log('R: ', x, ' - L: ', right.getNombre());
+    public getPrimeros(index: number) {
+        //for (let i in this.producciones) {
+        let x: string = this.producciones[index].getLeftSide();
+        let right: Termino = this.producciones[index].getRightSide()[0];
+
+        if  (right.getIsTerminal()) {
+            let noTerm: NoTerminal = this.noTerminals.find(e => e.getName() == x);
+            noTerm.getPrimeros().push(right.getNombre());
         }
     }
+    //}
 }
