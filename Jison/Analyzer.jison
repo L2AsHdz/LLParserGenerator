@@ -46,6 +46,8 @@
 
 %{
     const { InformacionAnalisis } = require('../models/analisis/InformacionAnalisis');
+    const { Produccion } = require('../models/analisis/Produccion');
+    const { Termino } = require('../models/analisis/Termino');
 
     let info;
 
@@ -87,7 +89,7 @@
                 }
             }
             if (termsAux.length > 0) {
-                producciones.push({izq: leftSide, der: termsAux});
+                producciones.push(new Produccion(leftSide, termsAux));
             }
         }
     }
@@ -221,17 +223,17 @@ PRODUCCION
 ;
 
 LADO_DERECHO
-    : TERMINO LADO_DERECHO          { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: noProduccion}); }
-    | TERMINO pipe OTRO             { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: ++noProduccion}); }
-    | TERMINO punto_coma            { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: noProduccion}); }
-    | lambda punto_coma             { terminos.unshift({name: 'lambda', isTerminal: false, noProduccion: noProduccion}); }
+    : TERMINO LADO_DERECHO          { terminos.unshift(new Termino($1.n, $1.isT, noProduccion)); }
+    | TERMINO pipe OTRO             { terminos.unshift(new Termino($1.n, $1.isT, ++noProduccion)); }
+    | TERMINO punto_coma            { terminos.unshift(new Termino($1.n, $1.isT, noProduccion)); }
+    | lambda punto_coma             { terminos.unshift(new Termino('lambda', false, noProduccion)); }
 ;
 
 OTRO
-    : TERMINO OTRO          { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: noProduccion}); }
-    | TERMINO pipe OTRO     { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: ++noProduccion}); }
-    | TERMINO punto_coma    { terminos.unshift({name: $1.n, isTerminal: $1.isT, noProduccion: ++noProduccion}); }
-    | lambda punto_coma     { terminos.unshift({name: 'lambda', isTerminal: false, noProduccion: ++noProduccion}); }
+    : TERMINO OTRO          { terminos.unshift(new Termino($1.n, $1.isT, noProduccion)); }
+    | TERMINO pipe OTRO     { terminos.unshift(new Termino($1.n, $1.isT, ++noProduccion)); }
+    | TERMINO punto_coma    { terminos.unshift(new Termino($1.n, $1.isT, ++noProduccion)); }
+    | lambda punto_coma     { terminos.unshift(new Termino('lambda', false, ++noProduccion)); }
 ;
 
 TERMINO

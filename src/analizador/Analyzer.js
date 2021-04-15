@@ -157,19 +157,19 @@ case 33:
     
 break;
 case 34: case 36: case 38:
- terminos.unshift({name: $$[$0-1].n, isTerminal: $$[$0-1].isT, noProduccion: noProduccion}); 
+ terminos.unshift(new Termino($$[$0-1].n, $$[$0-1].isT, noProduccion)); 
 break;
 case 35: case 39:
- terminos.unshift({name: $$[$0-2].n, isTerminal: $$[$0-2].isT, noProduccion: ++noProduccion}); 
+ terminos.unshift(new Termino($$[$0-2].n, $$[$0-2].isT, ++noProduccion)); 
 break;
 case 37:
- terminos.unshift({name: 'lambda', isTerminal: false, noProduccion: noProduccion}); 
+ terminos.unshift(new Termino('lambda', false, noProduccion)); 
 break;
 case 40:
- terminos.unshift({name: $$[$0-1].n, isTerminal: $$[$0-1].isT, noProduccion: ++noProduccion}); 
+ terminos.unshift(new Termino($$[$0-1].n, $$[$0-1].isT, ++noProduccion)); 
 break;
 case 41:
- terminos.unshift({name: 'lambda', isTerminal: false, noProduccion: ++noProduccion}); 
+ terminos.unshift(new Termino('lambda', false, ++noProduccion)); 
 break;
 case 42:
  addToArray(terminalesUsados, $$[$0]); this.$ = {n: $$[$0], isT: true}; 
@@ -329,6 +329,8 @@ parse: function parse(input) {
 }};
 
     const { InformacionAnalisis } = require('../models/analisis/InformacionAnalisis');
+    const { Produccion } = require('../models/analisis/Produccion');
+    const { Termino } = require('../models/analisis/Termino');
 
     let info;
 
@@ -370,7 +372,7 @@ parse: function parse(input) {
                 }
             }
             if (termsAux.length > 0) {
-                producciones.push({izq: leftSide, der: termsAux});
+                producciones.push(new Produccion(leftSide, termsAux));
             }
         }
     }
