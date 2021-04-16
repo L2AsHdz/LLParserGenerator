@@ -22,9 +22,13 @@ export class NulableCalculator {
             }
         }
 
-        let temp: Array<Produccion> = [];
-        this.producciones.forEach(p => temp.push(p));
-        for (let p of temp.reverse()) {
+        this.verificarNulable();
+
+        return this.noTerminalesTabla;
+    }
+
+    public verificarNulable() {
+        for (let p of this.producciones) {
             let noTermLeft: string = p.getLeftSide();
             let termino: Termino = p.getRightSide()[0];
 
@@ -32,10 +36,13 @@ export class NulableCalculator {
                 let noTermLefTabla: NoTerminal = this.noTerminalesTabla.find(e => e.getName() == noTermLeft);
                 let noTermRightTabla: NoTerminal = this.noTerminalesTabla.find(e => e.getName() == termino.getNombre());
                 if(noTermRightTabla.getIsNulable()) {
-                    noTermLefTabla.setIsNulable(true);
+
+                    if (!noTermLefTabla.getIsNulable()) {
+                        noTermLefTabla.setIsNulable(true);
+                        this.verificarNulable();
+                    }
                 }
             }
         }
-        return this.noTerminalesTabla;
     }
 }

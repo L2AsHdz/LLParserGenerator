@@ -10,11 +10,10 @@ class AnalizadorController {
 
     public analizar(request: Request, response: Response) {
         const textoEntrada = request.body.textoEntrada;
-        console.log(textoEntrada);
         const info: InformacionAnalisis = parser.parse(textoEntrada);
-        info.print();
+        console.log(textoEntrada, '\n\n');
 
-        console.log('\n\n\n\n');
+        info.print();
 
         let noTermsTable: Array<NoTerminal> = addNonTerminals(info.getProducciones());
         let nulables: NulableCalculator = new NulableCalculator(info.getProducciones(), noTermsTable);
@@ -32,9 +31,9 @@ class AnalizadorController {
 
 }
 const addNonTerminals = (producciones: Array<Produccion>) => {
-    let noTerminals = new Array<NoTerminal>();
-    for (let i in producciones) {
-        let name: string = producciones[i].getLeftSide();
+    let noTerminals: Array<NoTerminal> = new Array<NoTerminal>();
+    for (let p of producciones) {
+        let name: string = p.getLeftSide();
 
         if  (noTerminals.find(e => e.getName() == name) == undefined) {
             noTerminals.push(new NoTerminal(name, [], []));
