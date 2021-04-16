@@ -30,17 +30,24 @@ export class NulableCalculator {
     public verificarNulable() {
         for (let p of this.producciones) {
             let noTermLeft: string = p.getLeftSide();
-            let termino: Termino = p.getRightSide()[0];
+            let isNulable: boolean = true;
 
-            if (!termino.getIsTerminal()) {
-                let noTermLefTabla: NoTerminal = this.noTerminalesTabla.find(e => e.getName() == noTermLeft);
-                let noTermRightTabla: NoTerminal = this.noTerminalesTabla.find(e => e.getName() == termino.getNombre());
-                if(noTermRightTabla.getIsNulable()) {
-
-                    if (!noTermLefTabla.getIsNulable()) {
-                        noTermLefTabla.setIsNulable(true);
-                        this.verificarNulable();
+            for (const t of p.getRightSide()) {
+                if (!t.getIsTerminal()) {
+                    let noTermRightTabla: NoTerminal = this.noTerminalesTabla.find(e => e.getName() == t.getNombre());
+                    if(!noTermRightTabla.getIsNulable()) {
+                        isNulable = false;
                     }
+                } else {
+                    isNulable = false;
+                }
+            }
+
+            let noTermLefTabla: NoTerminal = this.noTerminalesTabla.find(e => e.getName() == noTermLeft);
+            if (isNulable) {
+                if (!noTermLefTabla.getIsNulable()) {
+                    noTermLefTabla.setIsNulable(true);
+                    this.verificarNulable();
                 }
             }
         }
