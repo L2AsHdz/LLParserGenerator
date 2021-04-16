@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
 import {InformacionAnalisis} from '../models/analisis/InformacionAnalisis';
 import parser from '../analizador/Analyzer';
-import { PrimerosGenerator } from '../models/LL1/PrimerosGenerator';
+import { PrimerosCalculator } from '../models/LL1/PrimerosCalculator';
 import { NoTerminal } from '../models/LL1/NoTerminal';
 import { Produccion } from '../models/analisis/Produccion';
 import { NulableCalculator } from '../models/LL1/NulableCalculator';
@@ -11,21 +11,22 @@ class AnalizadorController {
     public analizar(request: Request, response: Response) {
         const textoEntrada = request.body.textoEntrada;
         const info: InformacionAnalisis = parser.parse(textoEntrada);
-        console.log(textoEntrada, '\n\n');
+        /*console.log(textoEntrada, '\n\n');
 
-        info.print();
+        info.print();*/
 
         let noTermsTable: Array<NoTerminal> = addNonTerminals(info.getProducciones());
         let nulables: NulableCalculator = new NulableCalculator(info.getProducciones(), noTermsTable);
         nulables.calcularNulables();
+
+        let gen: PrimerosCalculator = new PrimerosCalculator(info.getProducciones(), noTermsTable);
+        gen.getPrimeros();
 
         console.log('NoTerminalesTabla: ');
         for (let nT of noTermsTable) {
             console.log(nT);
         }
 
-        //let gen: PrimerosGenerator = new PrimerosGenerator(info.getProducciones(), nTs);
-        //gen.getPrimeros(1);
         response.send('ESTA VIVO!!!!!!!');
     }
 

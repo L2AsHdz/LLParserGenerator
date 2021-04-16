@@ -1,0 +1,28 @@
+Wison ¿
+    Lex{:
+        Terminal $_D       <- 'd';
+        Terminal $_C       <- 'c';
+        Terminal $_A       <- 'a';
+    :}
+
+    Syntax {{:
+        #Comentario
+        No_Terminal %_A;
+        No_Terminal %_B;
+        No_Terminal %_C;
+
+        Initial_Sim %_C;
+
+        /**
+        comentario en bloque
+        */
+
+        %_C     <= $_D;
+        %_C     <= %_A %_B %_C;
+        %_B     <= lambda;
+        %_B     <= $_C;
+        %_A     <= %_B;
+        %_A     <= $_A
+
+    :}}
+?Wison
