@@ -6,32 +6,44 @@ import { NoTerminal } from '../models/LL1/NoTerminal';
 import { Produccion } from '../models/analisis/Produccion';
 import { NulableCalculator } from '../models/LL1/NulableCalculator';
 import { SiguientesCalculator } from '../models/LL1/SiguientesCalculator';
+import { ErroresSemanticos } from '../models/Errores/ErroresSemanticos';
 
 class AnalizadorController {
 
     public analizar(request: Request, response: Response) {
         const textoEntrada = request.body.textoEntrada;
         const info: InformacionAnalisis = parser.parse(textoEntrada);
-        /*console.log(textoEntrada, '\n\n');
 
-        info.print();*/
+        //analizar errores semanticos
+        let erroresSemanticos: ErroresSemanticos = new ErroresSemanticos(info);
+        erroresSemanticos.analizar().forEach(e => {
+            info.getErrores().push(e);
+        });
 
-        let noTermsTable: Array<NoTerminal> = addNonTerminals(info.getProducciones());
-        let nulables: NulableCalculator = new NulableCalculator(info.getProducciones(), noTermsTable);
-        nulables.calcularNulables();
+        if (info.getErrores().length == 0) {
+            let noTermsTable: Array<NoTerminal> = addNonTerminals(info.getProducciones());
+            let nulables: NulableCalculator = new NulableCalculator(info.getProducciones(), noTermsTable);
+            nulables.calcularNulables();
 
-        let primeros: PrimerosCalculator = new PrimerosCalculator(info.getProdInicial(), info.getProducciones(), noTermsTable);
-        primeros.getPrimeros();
+            let primeros: PrimerosCalculator = new PrimerosCalculator(info.getProdInicial(), info.getProducciones(), noTermsTable);
+            primeros.getPrimeros();
 
-        let siguientes: SiguientesCalculator = new SiguientesCalculator(info.getProdInicial(), info.getProducciones(), noTermsTable);
-        siguientes.getSiguientes();
+            let siguientes: SiguientesCalculator = new SiguientesCalculator(info.getProdInicial(), info.getProducciones(), noTermsTable);
+            siguientes.getSiguientes();
 
-        console.log('NoTerminalesTabla: ');
-        for (let nT of noTermsTable) {
-            console.log(nT);
+            console.log('NoTerminalesTabla: ');
+            for (let nT of noTermsTable) {
+                console.log(nT);
+            }
+            response.send('ESTA VIVO!!!!!!!');
+        } else {
+            for (const e of info.getErrores()) {
+                console.log(e);
+            }
+            response.send('Hay errores');
         }
 
-        response.send('ESTA VIVO!!!!!!!');
+
     }
 
 }

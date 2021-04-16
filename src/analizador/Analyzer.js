@@ -132,7 +132,7 @@ break;
 case 26:
 
         info = new InformacionAnalisis(prodInicial, terminalesDeclarados, terminalesUsados,
-        nonTerminalsDeclarados, nonTerminalsUsados, producciones);
+        nonTerminalsDeclarados, nonTerminalsUsados, producciones, errores);
         nuevasInstancias();
     
 break;
@@ -335,6 +335,8 @@ parse: function parse(input) {
 
     let info;
 
+    let errores = new Array;
+
     let terminalClausula = "";
     let terminalCombinado = new Array;
 
@@ -359,6 +361,7 @@ parse: function parse(input) {
         terminalClausula = "";
         terminalCombinado = new Array;
 
+        errores = new Array;
         terminalesDeclarados = new Array;
         terminalesUsados = new Array;
         nonTerminalsDeclarados = new Array;
@@ -783,7 +786,7 @@ case 29:return 24;
 break;
 case 30:return 5;
 break;
-case 31:console.log('Error lexico', yy_.yytext);
+case 31:addToArray(errores, ('Error lexico en: ' + yy_.yytext + ', linea: ' + yy_.yylloc.first_line + ', columna: ' + yy_.yylloc.first_column));
 break;
 }
 },

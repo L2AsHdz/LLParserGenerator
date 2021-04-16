@@ -8,15 +8,17 @@ export class InformacionAnalisis {
     private nonTerminals: Array<string>;
     private nonTerminalsUsados: Array<string>;
     private producciones: Array<Produccion>;
+    private errores: Array<string>;
 
     constructor(prodInicial: string, terminales: Array<string>, terminalesUsados: Array<string>, nonTerminals: Array<string>,
-        nonTerminalsUsados: Array<string>, producciones: Array<Produccion>) {
+        nonTerminalsUsados: Array<string>, producciones: Array<Produccion>, errores: Array<string>) {
             this.prodInicial = prodInicial;
             this.terminales = terminales;
             this.terminalesUsados = terminalesUsados;
             this.nonTerminals = nonTerminals;
             this.nonTerminalsUsados = nonTerminalsUsados;
             this.producciones = producciones;
+            this.errores = errores;
     }
 
     public getProdInicial(): string {
@@ -65,6 +67,14 @@ export class InformacionAnalisis {
 
     public setProducciones(producciones: Array<Produccion>): void {
         this.producciones = producciones;
+    }
+
+    public getErrores(): Array<string> {
+        return this.errores;
+    }
+
+    public setErrores(errores: Array<string>): void {
+        this.errores = errores;
     }
 
     public print() {

@@ -11,7 +11,7 @@
 "Syntax"                {return 'Syntax';}
 "No_Terminal"           {return 'No_Terminal';}
 "Initial_Sim"           {return 'Initial_Sim';}
-"lambda"           {return 'lambda';}
+"lambda"                {return 'lambda';}
 
 //Signos
 "¿"                     {return 'question_apertura';}
@@ -40,7 +40,7 @@
 \'[^\'\n]+\'                return 'keyword';
 
 <<EOF>>             return 'EOF';
-.                   {console.log('Error lexico', yytext);}
+.                   {addToArray(errores, ('Error lexico en: ' + yytext + ', linea: ' + yylloc.first_line + ', columna: ' + yylloc.first_column));}
 
 /lex
 
@@ -50,6 +50,8 @@
     const { Termino } = require('../models/analisis/Termino');
 
     let info;
+
+    let errores = new Array;
 
     let terminalClausula = "";
     let terminalCombinado = new Array;
@@ -75,6 +77,7 @@
         terminalClausula = "";
         terminalCombinado = new Array;
 
+        errores = new Array;
         terminalesDeclarados = new Array;
         terminalesUsados = new Array;
         nonTerminalsDeclarados = new Array;
@@ -124,6 +127,7 @@ INICIO
 
 WISON_STRUCTURE
     : Wison question_apertura ANALIZADORES question_cierre Wison
+    //| error { addToArray(errores, ('Error sintactico en:' + $1 + ', linea: ' + this._$.first_line + ', columna: ' + this._$.first_column)); }
 ;
 
 ANALIZADORES
@@ -203,7 +207,7 @@ SINTACTICO
 DEFINICION_GRAMATICA
     : NO_TERMINALES SIMBOLO_INICIAL PRODUCCIONES {
         info = new InformacionAnalisis(prodInicial, terminalesDeclarados, terminalesUsados,
-        nonTerminalsDeclarados, nonTerminalsUsados, producciones);
+        nonTerminalsDeclarados, nonTerminalsUsados, producciones, errores);
         nuevasInstancias();
     }
 ;
