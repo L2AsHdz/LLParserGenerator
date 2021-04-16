@@ -5,6 +5,7 @@ import { PrimerosCalculator } from '../models/LL1/PrimerosCalculator';
 import { NoTerminal } from '../models/LL1/NoTerminal';
 import { Produccion } from '../models/analisis/Produccion';
 import { NulableCalculator } from '../models/LL1/NulableCalculator';
+import { SiguientesCalculator } from '../models/LL1/SiguientesCalculator';
 
 class AnalizadorController {
 
@@ -19,8 +20,11 @@ class AnalizadorController {
         let nulables: NulableCalculator = new NulableCalculator(info.getProducciones(), noTermsTable);
         nulables.calcularNulables();
 
-        let gen: PrimerosCalculator = new PrimerosCalculator(info.getProdInicial(), info.getProducciones(), noTermsTable);
-        gen.getPrimeros();
+        let primeros: PrimerosCalculator = new PrimerosCalculator(info.getProdInicial(), info.getProducciones(), noTermsTable);
+        primeros.getPrimeros();
+
+        let siguientes: SiguientesCalculator = new SiguientesCalculator(info.getProdInicial(), info.getProducciones(), noTermsTable);
+        siguientes.getSiguientes();
 
         console.log('NoTerminalesTabla: ');
         for (let nT of noTermsTable) {
