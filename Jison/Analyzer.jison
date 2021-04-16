@@ -70,6 +70,21 @@
         }
     }
 
+    function nuevasInstancias() {
+        terminalClausula = "";
+        terminalCombinado = new Array;
+
+        terminalesDeclarados = new Array;
+        terminalesUsados = new Array;
+        nonTerminalsDeclarados = new Array;
+        nonTerminalsUsados = new Array;
+        producciones = new Array;
+        terminos = new Array;
+
+        noProduccion = 1;
+        isTerminal = true;
+    }
+
     function addProduccion(leftSide, rightSide) {
         for (i in rightSide) {
             let termsAux = new Array;
@@ -124,7 +139,7 @@ TERMINALES
 ;
 
 TERMINAL
-    : Terminal nameTerminal simple_arrow LEXIC_RULE { terminalesDeclarados.push($4); }
+    : Terminal nameTerminal simple_arrow LEXIC_RULE { terminalesDeclarados.push($2); }
 ;
 
 LEXIC_RULE
@@ -188,6 +203,7 @@ DEFINICION_GRAMATICA
     : NO_TERMINALES SIMBOLO_INICIAL PRODUCCIONES {
         info = new InformacionAnalisis(terminalesDeclarados, terminalesUsados,
         nonTerminalsDeclarados, nonTerminalsUsados, producciones);
+        nuevasInstancias();
     }
 ;
 

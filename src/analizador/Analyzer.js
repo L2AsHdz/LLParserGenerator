@@ -90,7 +90,7 @@ case 1:
     
 break;
 case 7:
- terminalesDeclarados.push($$[$0]); 
+ terminalesDeclarados.push($$[$0-2]); 
 break;
 case 8: case 9: case 10: case 11: case 15: case 16: case 17: case 18: case 19: case 23: case 29:
  this.$ = $$[$0]; 
@@ -133,6 +133,7 @@ case 26:
 
         info = new InformacionAnalisis(terminalesDeclarados, terminalesUsados,
         nonTerminalsDeclarados, nonTerminalsUsados, producciones);
+        nuevasInstancias();
     
 break;
 case 27:
@@ -351,6 +352,21 @@ parse: function parse(input) {
         if (array.find(e => e == element) == undefined) {
             array.push(element);
         }
+    }
+
+    function nuevasInstancias() {
+        terminalClausula = "";
+        terminalCombinado = new Array;
+
+        terminalesDeclarados = new Array;
+        terminalesUsados = new Array;
+        nonTerminalsDeclarados = new Array;
+        nonTerminalsUsados = new Array;
+        producciones = new Array;
+        terminos = new Array;
+
+        noProduccion = 1;
+        isTerminal = true;
     }
 
     function addProduccion(leftSide, rightSide) {
