@@ -38,11 +38,19 @@ export class PrimerosCalculator {
                     } else {
                         if (nameLeft != right.getNombre()) {
                             this.addPrimerosDeNoTerminal(right, nTermTblLeft);
-                            console.log(p.getRightSide().length, ' - ', indexRight);
-                            console.log(p.getRightSide().length > indexRight);
-                            /*if ((p.getRightSide().length - 1) > indexRight) {
-                                this.calcularPrimeros(nameLeft, pTemp, ++indexRight);
-                            }*/
+                            if (indexRight < (p.getRightSide().length - 1)) {
+                                right = p.getRightSide()[++indexRight];
+                                let nTermTblRight: NoTerminal = this.getNoTermTbl(right.getNombre());
+                                if (nTermTblRight.getPrimeros().length == 0) {
+                                    let left = right.getNombre();
+                                    let prodTemp: Array<Produccion> = [];
+                                    this.addProduccionesTemp(prodTemp, left);
+                                    this.calcularPrimeros(left, prodTemp, 0);
+                                }
+                                nTermTblRight.getPrimeros().forEach(p => {
+                                    this.addToPrimeros(nTermTblLeft.getPrimeros(), p);
+                                });
+                            }
                         } else {
                             //Evaluar solo siguientes siguientes
                         }
