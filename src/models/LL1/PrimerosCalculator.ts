@@ -4,16 +4,23 @@ import { NoTerminal } from "./NoTerminal";
 
 export class PrimerosCalculator {
 
+    private prodInicial: string;
     private producciones: Array<Produccion>;
     private noTerminalsTable: Array<NoTerminal>;
 
-    constructor(producciones: Array<Produccion>, noTerminalsTable: Array<NoTerminal>) {
+    constructor(proInicial: string, producciones: Array<Produccion>, noTerminalsTable: Array<NoTerminal>) {
+        this.prodInicial = proInicial;
         this.producciones = producciones;
         this.noTerminalsTable = noTerminalsTable;
     }
 
     public getPrimeros() {
-        //for (let i in this.producciones) {
+        let name: string = this.prodInicial;
+        let pTemp: Array<Produccion> = new Array<Produccion>();
+        this.addProduccionesTemp(pTemp, name);
+
+        this.calcularPrimeros(name, pTemp, 0);
+
         for (let i = 0; i < this.noTerminalsTable.length; i++) {
             let name: string = this.noTerminalsTable[i].getName();
             let pTemp: Array<Produccion> = new Array<Produccion>();

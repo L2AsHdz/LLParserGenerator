@@ -19,7 +19,7 @@ class AnalizadorController {
         let nulables: NulableCalculator = new NulableCalculator(info.getProducciones(), noTermsTable);
         nulables.calcularNulables();
 
-        let gen: PrimerosCalculator = new PrimerosCalculator(info.getProducciones(), noTermsTable);
+        let gen: PrimerosCalculator = new PrimerosCalculator(info.getProdInicial(), info.getProducciones(), noTermsTable);
         gen.getPrimeros();
 
         console.log('NoTerminalesTabla: ');

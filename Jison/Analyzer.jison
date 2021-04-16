@@ -54,6 +54,7 @@
     let terminalClausula = "";
     let terminalCombinado = new Array;
 
+    let prodInicial = "";
     let terminalesDeclarados = new Array;
     let terminalesUsados = new Array;
     let nonTerminalsDeclarados = new Array;
@@ -201,7 +202,7 @@ SINTACTICO
 
 DEFINICION_GRAMATICA
     : NO_TERMINALES SIMBOLO_INICIAL PRODUCCIONES {
-        info = new InformacionAnalisis(terminalesDeclarados, terminalesUsados,
+        info = new InformacionAnalisis(prodInicial, terminalesDeclarados, terminalesUsados,
         nonTerminalsDeclarados, nonTerminalsUsados, producciones);
         nuevasInstancias();
     }
@@ -221,7 +222,10 @@ NO_TERMINAL
 ;
 
 SIMBOLO_INICIAL
-    : Initial_Sim nameNonTerminal punto_coma { addToArray(nonTerminalsUsados, $2); }
+    : Initial_Sim nameNonTerminal punto_coma {
+        addToArray(nonTerminalsUsados, $2);
+        prodInicial = $2;
+    }
 ;
 
 PRODUCCIONES
@@ -242,17 +246,16 @@ LADO_DERECHO
     : TERMINO LADO_DERECHO          { terminos.unshift(new Termino($1.n, $1.isT, noProduccion)); }
     | TERMINO pipe OTRO             { terminos.unshift(new Termino($1.n, $1.isT, ++noProduccion)); }
     | TERMINO punto_coma            { terminos.unshift(new Termino($1.n, $1.isT, noProduccion)); }
-    | lambda punto_coma             { terminos.unshift(new Termino('lambda', true, noProduccion)); }
 ;
 
 OTRO
     : TERMINO OTRO          { terminos.unshift(new Termino($1.n, $1.isT, noProduccion)); }
     | TERMINO pipe OTRO     { terminos.unshift(new Termino($1.n, $1.isT, ++noProduccion)); }
     | TERMINO punto_coma    { terminos.unshift(new Termino($1.n, $1.isT, ++noProduccion)); }
-    | lambda punto_coma     { terminos.unshift(new Termino('lambda', true, ++noProduccion)); }
 ;
 
 TERMINO
     : nameTerminal      { addToArray(terminalesUsados, $1); $$ = {n: $1, isT: true}; }
     | nameNonTerminal   { addToArray( nonTerminalsUsados, $1); $$ = {n: $1, isT: false}; }
+    | lambda            { $$ = {n: $1, isT: true}; }
 ;
