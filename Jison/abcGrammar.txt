@@ -22,7 +22,7 @@ Wison ¿
         %_B     <= lambda;
         %_B     <= $_C;
         %_A     <= %_B;
-        %_A     <= $_A
+        %_A     <= $_A;
 
     :}}
 ?Wison
