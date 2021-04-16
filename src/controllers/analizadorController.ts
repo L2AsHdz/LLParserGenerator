@@ -19,6 +19,7 @@ class AnalizadorController {
         erroresSemanticos.analizar().forEach(e => {
             info.getErrores().push(e);
         });
+        let errores: Array<string> = info.getErrores();
 
         if (info.getErrores().length == 0) {
             let noTermsTable: Array<NoTerminal> = addNonTerminals(info.getProducciones());
@@ -40,7 +41,10 @@ class AnalizadorController {
             for (const e of info.getErrores()) {
                 console.log(e);
             }
-            response.send('Hay errores');
+            response.render('result', {
+                'tituloA': 'Se encontraron los siguientes errores:',
+                'errores': errores
+            });
         }
 
 

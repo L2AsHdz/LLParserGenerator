@@ -7,7 +7,7 @@ const routes = Router();
 routes.use(analizadorRouter);
 
 routes.get('/', (request: Request, response: Response) => {
-    response.render('indexWison',);
+    response.render('indexWison');
 });
 
 export default routes;
