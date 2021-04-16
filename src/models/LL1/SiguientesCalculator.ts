@@ -24,11 +24,6 @@ export class SiguientesCalculator {
             let name: string = this.noTerminalsTable[i].getName();
             let pTemp: Array<Produccion> = new Array<Produccion>();
             this.addProduccionesTemp(pTemp, name);
-            console.log('Producciones de: ', name);
-            for (const p of pTemp) {
-                console.log(p);
-            }
-            console.log('Fin\n\n');
 
             this.calcularSiguientes(name, pTemp, 0);
         }
@@ -49,18 +44,26 @@ export class SiguientesCalculator {
                     if (!next.getIsNulable()) {
                         this.addToSiguientes(actual.getSiguientes(), next.getPrimeros());
                     } else {
-                        //agregar los siguientes del siguiente
+                        this.addToSiguientes(actual.getSiguientes(), next.getPrimeros());
+
+                        //let nameNextNext: string = this.getNameNext(p.getRightSide(), nameNext);
+                        let nameNextNext: Termino = p.getRightSide()[this.getIndexNext(p.getRightSide(), nameNext)];
+                        if (nameNextNext != undefined) {
+                            let next2Table: NoTerminal = this.getNoTermTbl(nameNextNext.getNombre());
+                            if (next2Table.getSiguientes().length == 0) {
+                                let pTemp: Array<Produccion> = new Array<Produccion>();
+                                this.addProduccionesTemp(pTemp, nameNextNext.getNombre());
+                                this.calcularSiguientes(nameNextNext.getNombre(), pTemp, 0);
+                            }
+                            this.addToSiguientes(actual.getSiguientes(), next2Table.getSiguientes());
+                        } else {
+                            this.addSiguientesOfLeft(p, actual);
+                        }
+
                     }
                 }
             } else {
-                let nameLeft: string = p.getLeftSide();
-                let leftTable: NoTerminal = this.getNoTermTbl(nameLeft);
-                if (leftTable.getSiguientes().length == 0) {
-                    let pTemp: Array<Produccion> = new Array<Produccion>();
-                    this.addProduccionesTemp(pTemp, nameLeft);
-                    this.calcularSiguientes(nameLeft, pTemp, 0);
-                }
-                this.addToSiguientes(actual.getSiguientes(), leftTable.getSiguientes());
+                this.addSiguientesOfLeft(p, actual);
             }
         }
     }
@@ -103,5 +106,16 @@ export class SiguientesCalculator {
                 }
             }
         });
+    }
+
+    private addSiguientesOfLeft(p: Produccion, actual: NoTerminal) {
+        let nameLeft: string = p.getLeftSide();
+        let leftTable: NoTerminal = this.getNoTermTbl(nameLeft);
+        if (leftTable.getSiguientes().length == 0) {
+            let pTemp: Array<Produccion> = new Array<Produccion>();
+            this.addProduccionesTemp(pTemp, nameLeft);
+            this.calcularSiguientes(nameLeft, pTemp, 0);
+        }
+        this.addToSiguientes(actual.getSiguientes(), leftTable.getSiguientes());
     }
 }
