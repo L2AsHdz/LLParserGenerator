@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>LL Parser Generator</title>
+        <%- include('partials/head.ejs'); %>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row py-2 bg-dark">
+                <div class="col-xl-3 ">
+                    <h3 class="mt-2 ml-3 text-white">LL Parser Generator</h3>
+                </div>
+            </div>
+
+                <div class="row pt-3">
+                    <div class="col-xl-2"></div>
+                    <div class="col-xl-8">
+                        <div class="form-group">
+                            <label for="comment"><%=tituloA%></label><br>
+                            <% noTerminales.forEach( e => {%>
+                                <label><%=e;%></label><br>
+                            <%});%>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row pt-3">
+                    <div class="col-xl-4"></div>
+                    <div class="col-xl-4">
+                        <a href="http://localhost:8080/" class="btn btn-success btn-block">Pagina de inicio</a>
+                    </div>
+                </div>
+        </div>
+        <script src="readFile.js"></script>
+        <%- include('partials/extrasJS.ejs'); %>
+    </body>
+</html>

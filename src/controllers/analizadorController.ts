@@ -36,7 +36,22 @@ class AnalizadorController {
             for (let nT of noTermsTable) {
                 console.log(nT);
             }
-            response.send('ESTA VIVO!!!!!!!');
+
+            let infos: Array<string> = new Array<string>();
+
+            for (let nT of noTermsTable) {
+                infos.push('No terminal izquierdo: ' + nT.getName());
+                infos.push('     Primeros: ' + nT.getPrimeros());
+                infos.push('     Siguientes: ' + nT.getSiguientes());
+                infos.push('     Es nulable: ' + nT.getIsNulable());
+                infos.push('       ');
+            }
+
+
+            response.render('resultado', {
+                'tituloA': 'Informacion obtenida de la gramatica ingresada:',
+                'noTerminales': infos
+            });
         } else {
             for (const e of info.getErrores()) {
                 console.log(e);
